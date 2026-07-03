@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workflow Manifest — ComfyUI dependency checker</title>
+  <meta name="description" content="Drop a ComfyUI workflow JSON file and see exactly which custom node packs and model files it needs, before you carry it to an offline machine." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <p class="eyebrow">for air‑gapped ComfyUI rigs</p>
+      <h1>Workflow&nbsp;Manifest</h1>
+      <p class="hero__sub">
+        Drop in a workflow — get back exactly what needs to cross the gap:
+        custom node packs and model files, checked before you carry it over.
+      </p>
+    </header>
+
+    <section class="intake" id="intake">
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload workflow JSON file">
+        <p class="dropzone__title">Drop workflow.json here</p>
+        <p class="dropzone__hint">or click to browse — the file never leaves your browser</p>
+        <input type="file" id="fileInput" accept="application/json,.json" hidden />
+      </div>
+
+      <details class="paste">
+        <summary>Paste JSON instead</summary>
+        <textarea id="pasteArea" rows="7" spellcheck="false"
+          placeholder='{ "nodes": [ ... ] }   or the API form:   { "3": { "class_type": "KSampler", "inputs": { ... } } }'></textarea>
+        <button id="pasteBtn" class="btn">Read pasted JSON</button>
+      </details>
+
+      <button id="exampleBtn" class="link-btn">Try an example workflow →</button>
+    </section>
+
+    <p class="error" id="errorBox" hidden></p>
+
+    <section class="results" id="results" hidden>
+      <div class="results__bar">
+        <p class="source-note" id="sourceNote"></p>
+        <div class="results__actions">
+          <button id="copyBtn" class="btn btn--ghost">Copy manifest as checklist</button>
+          <button id="resetBtn" class="btn btn--ghost">Start over</button>
+        </div>
+      </div>
+
+      <div class="summary" id="summaryStrip"></div>
+
+      <section class="section" id="customSection" hidden></section>
+      <section class="section" id="unverifiedSection" hidden></section>
+      <section class="section" id="filesSection" hidden></section>
+      <section class="section" id="coreSection" hidden></section>
+    </section>
+
+    <footer class="footer">
+      <p>Nothing is uploaded — this page reads the file locally and works offline once loaded, same as the rig it's checking for.</p>
+      <p>
+        Custom node packs are read straight from the workflow's own saved metadata when it's present.
+        Everything else falls back to a <a href="core-nodes.js">bundled list of core ComfyUI nodes</a>,
+        which can go stale — treat anything marked <em>unverified</em> as worth a manual look, not a confirmed problem.
+      </p>
+    </footer>
+  </div>
+
+  <script src="core-nodes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
